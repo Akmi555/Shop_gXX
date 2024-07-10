@@ -1,0 +1,13 @@
+#spring.application.name=Shop
+#spring.datasource.url=jdbc:postgresql://localhost:5432/g_XX_shop
+#spring.datasource.username=postgres
+#spring.datasource.password=pos1234
+
+spring:
+  application:
+    name: Shop
+  datasource:
+    url: jdbc:postgresql://localhost:5432/g_XX_shop
+    username: postgres
+    password: pos1234
+    driver-class-name: org.postgresql.Driver
