@@ -4,13 +4,24 @@ package de.ait_tr.gxx_shop.domain.entity;
 @author Sergey Bugaienko
 */
 
+import jakarta.persistence.*;
+
 import java.math.BigDecimal;
 import java.util.Objects;
 
+@Entity
+@Table(name = "product")
 public class Product {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
+    @Column(name = "title")
     private String title;
+    @Column(name = "price")
     private BigDecimal price;
+    @Column
     private boolean active;
 
     @Override

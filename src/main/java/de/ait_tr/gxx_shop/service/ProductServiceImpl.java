@@ -5,27 +5,43 @@ package de.ait_tr.gxx_shop.service;
 */
 
 import de.ait_tr.gxx_shop.domain.entity.Product;
+import de.ait_tr.gxx_shop.repository.ProductRepository;
 import de.ait_tr.gxx_shop.service.interfacse.ProductService;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
+
+    private final ProductRepository repository;
+
+    public ProductServiceImpl(ProductRepository repository) {
+        this.repository = repository;
+    }
+
     @Override
     public Product save(Product product) {
-        return null;
+        product.setActive(true);
+        return repository.save(product);
     }
 
     @Override
     public List<Product> getAllActiveProducts() {
-        return List.of();
+        return repository.findAll().stream()
+                .filter(Product::isActive)
+                .collect(Collectors.toList());
     }
 
     @Override
     public Product getById(Long id) {
-        return null;
+        Product product = repository.findById(id).orElse(null);
+        if (product == null || !product.isActive()) {
+            return null;
+        }
+        return product;
     }
 
     @Override
