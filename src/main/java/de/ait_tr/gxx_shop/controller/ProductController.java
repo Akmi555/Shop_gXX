@@ -6,6 +6,13 @@ package de.ait_tr.gxx_shop.controller;
 
 import de.ait_tr.gxx_shop.domain.entity.Product;
 import de.ait_tr.gxx_shop.service.interfacse.ProductService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +21,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/products")
+@Tag(name = "Product controller", description = "Controller for operations with products")
 public class ProductController {
 
     private final ProductService productService;
@@ -23,14 +31,25 @@ public class ProductController {
         this.productService = productService;
     }
 
+    @Operation(summary = "Create product", description = "Add new product.", tags = { "Product" })
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Product.class)), @Content(mediaType = "application/xml", schema = @Schema(implementation = Product.class)) }) })
     @PostMapping
-    public Product saveProduct(@RequestBody Product product) {
+    public Product saveProduct(@Parameter(description = "Created project object") @RequestBody Product product) {
         return productService.save(product);
     }
 
     // GET /products?id=3
+
+    @Operation(summary = "Get product by id", tags = { "Product" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Product.class)), @Content(mediaType = "application/xml", schema = @Schema(implementation = Product.class)) }),
+            @ApiResponse(responseCode = "400", description = "Invalid id supplied", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Product not found", content = @Content) })
+
+
     @GetMapping("/{id}")
-    public Product getById(@PathVariable Long id) {
+    public Product getById(
+            @Parameter(description = "The id that needs to be fetched. ", required = true) @PathVariable Long id) {
         // здесь у нас вполне может вернуться null
         return productService.getById(id);
     }
