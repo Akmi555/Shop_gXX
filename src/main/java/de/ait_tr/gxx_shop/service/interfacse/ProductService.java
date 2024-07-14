@@ -4,6 +4,7 @@ package de.ait_tr.gxx_shop.service.interfacse;
 @author Sergey Bugaienko
 */
 
+import de.ait_tr.gxx_shop.domain.dto.ProductDto;
 import de.ait_tr.gxx_shop.domain.entity.Product;
 
 import java.math.BigDecimal;
@@ -11,18 +12,17 @@ import java.util.List;
 
 public interface ProductService {
 
-    Product save(Product product);
-    List<Product> getAllActiveProducts();
-    Product getById(Long id);
-    Product update(Long id, Product product);
-    Product deleteProductById(Long id);
+    ProductDto save(ProductDto productDto);
+    List<ProductDto> getAllActiveProducts();
+    ProductDto getById(Long id);
+    ProductDto update(Long id, ProductDto productDto);
+    ProductDto deleteProductById(Long id);
 
 
     // Остальные 5
-    Product deleteByTitle(String title);
+    ProductDto deleteByTitle(String title);
     void restoreById(Long id);
     long getProductCount();
     BigDecimal getTotalPrice();
     BigDecimal getAveragePrice();
-
 }

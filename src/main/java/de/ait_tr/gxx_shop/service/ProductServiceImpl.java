@@ -4,9 +4,11 @@ package de.ait_tr.gxx_shop.service;
 @author Sergey Bugaienko
 */
 
+import de.ait_tr.gxx_shop.domain.dto.ProductDto;
 import de.ait_tr.gxx_shop.domain.entity.Product;
 import de.ait_tr.gxx_shop.repository.ProductRepository;
 import de.ait_tr.gxx_shop.service.interfacse.ProductService;
+import de.ait_tr.gxx_shop.service.mapping.ProductMappingService;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -17,45 +19,49 @@ import java.util.stream.Collectors;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository repository;
+    private final ProductMappingService mappingService;
 
-    public ProductServiceImpl(ProductRepository repository) {
+    public ProductServiceImpl(ProductRepository repository, ProductMappingService mappingService) {
         this.repository = repository;
+        this.mappingService = mappingService;
     }
 
     @Override
-    public Product save(Product product) {
+    public ProductDto save(ProductDto productDto) {
+        Product product = mappingService.mapDtoToEntity(productDto);
         product.setActive(true);
-        return repository.save(product);
+        return mappingService.mapEntityToDto(repository.save(product));
     }
 
     @Override
-    public List<Product> getAllActiveProducts() {
+    public List<ProductDto> getAllActiveProducts() {
         return repository.findAll().stream()
                 .filter(Product::isActive)
+                .map(mappingService::mapEntityToDto)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public Product getById(Long id) {
+    public ProductDto getById(Long id) {
         Product product = repository.findById(id).orElse(null);
         if (product == null || !product.isActive()) {
             return null;
         }
-        return product;
+        return mappingService.mapEntityToDto(product);
     }
 
     @Override
-    public Product update(Long id, Product product) {
+    public ProductDto update(Long id, ProductDto productDto) {
         return null;
     }
 
     @Override
-    public Product deleteProductById(Long id) {
+    public ProductDto deleteProductById(Long id) {
         return null;
     }
 
     @Override
-    public Product deleteByTitle(String title) {
+    public ProductDto deleteByTitle(String title) {
         return null;
     }
 

@@ -4,6 +4,7 @@ package de.ait_tr.gxx_shop.controller;
 @author Sergey Bugaienko
 */
 
+import de.ait_tr.gxx_shop.domain.dto.ProductDto;
 import de.ait_tr.gxx_shop.domain.entity.Product;
 import de.ait_tr.gxx_shop.service.interfacse.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,43 +33,44 @@ public class ProductController {
     }
 
     @Operation(summary = "Create product", description = "Add new product.", tags = { "Product" })
-    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Product.class)), @Content(mediaType = "application/xml", schema = @Schema(implementation = Product.class)) }) })
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ProductDto.class)), @Content(mediaType = "application/xml", schema = @Schema(implementation = ProductDto.class)) }) })
     @PostMapping
-    public Product saveProduct(@Parameter(description = "Created project object") @RequestBody Product product) {
-        return productService.save(product);
+    public ProductDto saveProduct(@Parameter(description = "Created project object") @RequestBody ProductDto productDto) {
+        return productService.save(productDto);
     }
 
     // GET /products?id=3
 
     @Operation(summary = "Get product by id", tags = { "Product" })
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "successful operation", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Product.class)), @Content(mediaType = "application/xml", schema = @Schema(implementation = Product.class)) }),
+            @ApiResponse(responseCode = "200", description = "successful operation", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ProductDto.class)), @Content(mediaType = "application/xml", schema = @Schema(implementation = ProductDto.class)) }),
             @ApiResponse(responseCode = "400", description = "Invalid id supplied", content = @Content),
             @ApiResponse(responseCode = "404", description = "Product not found", content = @Content) })
 
 
     @GetMapping("/{id}")
-    public Product getById(
-            @Parameter(description = "The id that needs to be fetched. ", required = true) @PathVariable Long id) {
+    public ProductDto getById(
+            @Parameter(description = "The id that needs to be fetched. ", required = true)
+            @PathVariable Long id) {
         // здесь у нас вполне может вернуться null
         return productService.getById(id);
     }
 
     //GET -> /products
     @GetMapping
-    public List<Product> getAll() {
+    public List<ProductDto> getAll() {
         return productService.getAllActiveProducts();
     }
 
     // Update: PUT -> /products/id - и в теле поля, которые мы хотим поменять
     @PutMapping("/{id}")
-    public Product update(@PathVariable Long id, @RequestBody Product product) {
-        return productService.update(id, product);
+    public ProductDto update(@PathVariable Long id, @RequestBody ProductDto productDto) {
+        return productService.update(id, productDto);
     }
 
     // Delete: DELETE -> /products/id
     @DeleteMapping("/{productId}")
-    public Product remove(@PathVariable("productId") Long id) {
+    public ProductDto remove(@PathVariable("productId") Long id) {
         // Todo Обращаемся к сервису для удаления продукта
         return productService.deleteProductById(id);
     }
@@ -87,7 +89,7 @@ public class ProductController {
      */
 
     @DeleteMapping("/by-title")
-    public Product removeByTitle(@RequestParam String title) {
+    public ProductDto removeByTitle(@RequestParam String title) {
         return productService.deleteByTitle(title);
     }
 
