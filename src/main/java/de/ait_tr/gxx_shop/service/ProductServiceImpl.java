@@ -29,7 +29,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductDto save(ProductDto productDto) {
         Product product = mappingService.mapDtoToEntity(productDto);
-        product.setActive(true);
+//        product.setActive(true); // Реализовали в mapping.
         return mappingService.mapEntityToDto(repository.save(product));
     }
 
