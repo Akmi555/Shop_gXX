@@ -4,10 +4,20 @@ package de.ait_tr.gxx_shop.domain.entity;
 @author Sergey Bugaienko
 */
 
+import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+
 import java.util.Objects;
 
-public class Role {
+@Entity
+@Table(name = "role")
+public class Role implements GrantedAuthority {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
+    @Column
     private String title;
 
 
@@ -46,5 +56,10 @@ public class Role {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    @Override
+    public String getAuthority() {
+        return title;
     }
 }
