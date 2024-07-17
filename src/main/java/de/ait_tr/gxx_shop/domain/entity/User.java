@@ -4,6 +4,8 @@ package de.ait_tr.gxx_shop.domain.entity;
 @author Sergey Bugaienko
 */
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import java.util.Objects;
 import java.util.Set;
 
@@ -68,4 +70,9 @@ public class User {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
+
+    // Метод для получения зашифрованного пароля
+//    public static void main(String[] args) {
+//        System.out.println(new BCryptPasswordEncoder().encode("111"));
+//    }
 }
