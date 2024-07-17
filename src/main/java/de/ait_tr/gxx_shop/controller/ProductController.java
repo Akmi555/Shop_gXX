@@ -27,6 +27,24 @@ public class ProductController {
 
     private final ProductService productService;
 
+    /*
+
+У нас будут три уровня доступа:
+
+1. **Получение всех продуктов**:
+    - Доступно всем пользователям, включая анонимных.
+    - Анонимные пользователи — это те, кто обращается к приложению без логина и пароля.
+
+2. **Получение продукта по идентификатору (ID)**:
+    - Доступно только аутентифицированным пользователям с любой ролью.
+    - Пользователь должен быть залогинен, чтобы получить доступ к продукту по ID.
+
+3. **Сохранение продукта в базу данных**:
+    - Доступно только администраторам.
+    - Пользователь должен иметь роль администратора, чтобы сохранить продукт в базу данных.
+
+     */
+
     @Autowired
     public ProductController(ProductService productService) {
         this.productService = productService;
@@ -36,6 +54,8 @@ public class ProductController {
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ProductDto.class)), @Content(mediaType = "application/xml", schema = @Schema(implementation = ProductDto.class)) }) })
     @PostMapping
     public ProductDto saveProduct(@Parameter(description = "Created project object") @RequestBody ProductDto productDto) {
+        // Todo
+        System.out.println("Save prod");
         return productService.save(productDto);
     }
 

@@ -6,15 +6,11 @@ package de.ait_tr.gxx_shop.domain.entity;
 
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "user")
@@ -34,7 +30,7 @@ public class User implements UserDetails {
     @JoinTable(
             name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "id")
+            inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roles;
 
