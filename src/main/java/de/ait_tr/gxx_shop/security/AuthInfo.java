@@ -16,6 +16,10 @@ public class AuthInfo implements Authentication {
     private String username;
     private Set<Role> roles;
 
+    public AuthInfo(String username, Set<Role> roles) {
+        this.username = username;
+        this.roles = roles;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
