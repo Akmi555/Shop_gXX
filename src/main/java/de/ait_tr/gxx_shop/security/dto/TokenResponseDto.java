@@ -13,7 +13,7 @@ public class TokenResponseDto {
     public TokenResponseDto() {
     }
 
-    public TokenResponseDto(String refreshToken, String accessToken) {
+    public TokenResponseDto(String accessToken, String refreshToken) {
         this.refreshToken = refreshToken;
         this.accessToken = accessToken;
     }

@@ -9,18 +9,20 @@ import de.ait_tr.gxx_shop.domain.entity.User;
 import de.ait_tr.gxx_shop.repository.RoleRepository;
 import de.ait_tr.gxx_shop.security.AuthInfo;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,7 +40,7 @@ public class TokenService {
         ;
     }
 
-    public String generateAccessToken(User user) {
+    public String generateAccessToken(UserDetails user) {
 
         Instant now = Instant.now();
         Instant expiration = now.plus(7, ChronoUnit.DAYS);
@@ -46,22 +48,22 @@ public class TokenService {
         Date expirationDate = Date.from(expiration);
 
         return Jwts.builder()
-                .subject(user.getUserName())
+                .subject(user.getUsername())
                 .expiration(expirationDate)
                 .signWith(accessKey)
-                .claim("roles", user.getRoles())
-                .claim("name", user.getUserName())
+                .claim("roles", user.getAuthorities())
+                .claim("name", user.getUsername())
                 .compact();
     }
 
-    public String generateRefreshToken(User user) {
+    public String generateRefreshToken(UserDetails user) {
 
         Instant now = Instant.now();
         Instant expiration = now.plus(30, ChronoUnit.DAYS);
         Date expirationDate = Date.from(expiration);
 
         return Jwts.builder()
-                .subject(user.getUserName())
+                .subject(user.getUsername())
                 .expiration(expirationDate)
                 .signWith(refreshKey)
                 .compact();

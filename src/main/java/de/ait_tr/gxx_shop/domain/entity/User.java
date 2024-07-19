@@ -22,7 +22,7 @@ public class User implements UserDetails {
     private Long id;
 
     @Column(name = "username")
-    private String userName;
+    private String username;
     @Column
     private String password;
 
@@ -37,7 +37,7 @@ public class User implements UserDetails {
     @Override
     public String toString() {
         return String.format("User: id - %d, username - %s, roles - %s",
-                id, userName, roles == null ? "[]" : roles);
+                id, username, roles == null ? "[]" : roles);
     }
 
     @Override
@@ -46,13 +46,13 @@ public class User implements UserDetails {
         if (o == null || getClass() != o.getClass()) return false;
 
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(userName, user.userName) && Objects.equals(password, user.password) && Objects.equals(roles, user.roles);
+        return Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(roles, user.roles);
     }
 
     @Override
     public int hashCode() {
         int result = Objects.hashCode(id);
-        result = 31 * result + Objects.hashCode(userName);
+        result = 31 * result + Objects.hashCode(username);
         result = 31 * result + Objects.hashCode(password);
         result = 31 * result + Objects.hashCode(roles);
         return result;
@@ -66,12 +66,12 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String userName) {
+        this.username = userName;
     }
 
     @Override
@@ -89,7 +89,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return userName;
+        return username;
     }
 
     public void setPassword(String password) {
