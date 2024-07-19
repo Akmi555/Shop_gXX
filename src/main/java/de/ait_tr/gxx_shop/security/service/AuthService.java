@@ -7,6 +7,7 @@ package de.ait_tr.gxx_shop.security.service;
 import de.ait_tr.gxx_shop.domain.entity.User;
 import de.ait_tr.gxx_shop.security.dto.LoginRequestDTO;
 import de.ait_tr.gxx_shop.security.dto.TokenResponseDto;
+import io.jsonwebtoken.Claims;
 import jakarta.security.auth.message.AuthException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -43,7 +44,23 @@ public class AuthService {
             return new TokenResponseDto(accessToken, refreshToken);
         }
         throw new AuthException("Incorrect login and / or password");
+    }
 
+    public TokenResponseDto refreshAccessToken(String refreshToken) throws AuthException {
+        boolean isValid = tokenService.validateRefreshToken(refreshToken);
 
+        Claims refreshClaims = tokenService.getRefreshClaims(refreshToken);
+        String username = refreshClaims.getSubject();
+
+        String savedToken = refreshStorage.get(username);
+        boolean isSaved = (savedToken != null && savedToken.equals(refreshToken));
+
+        if (isValid && isSaved) {
+            UserDetails foundUser = userDetailsService.loadUserByUsername(username);
+            String accessToken = tokenService.generateAccessToken(foundUser);
+
+            return new TokenResponseDto(accessToken, refreshToken);
+        }
+        throw new AuthException("Incorrect refresh token. Re login please");
     }
 }
