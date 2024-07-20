@@ -5,7 +5,6 @@ package de.ait_tr.gxx_shop.controller;
 */
 
 import de.ait_tr.gxx_shop.domain.dto.ProductDto;
-import de.ait_tr.gxx_shop.domain.entity.Product;
 import de.ait_tr.gxx_shop.service.interfacse.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
