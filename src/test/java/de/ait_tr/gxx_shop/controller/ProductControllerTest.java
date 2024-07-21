@@ -3,14 +3,12 @@ package de.ait_tr.gxx_shop.controller;
 import de.ait_tr.gxx_shop.domain.dto.ProductDto;
 import de.ait_tr.gxx_shop.domain.entity.Role;
 import de.ait_tr.gxx_shop.domain.entity.User;
+import de.ait_tr.gxx_shop.repository.ProductRepository;
 import de.ait_tr.gxx_shop.repository.RoleRepository;
 import de.ait_tr.gxx_shop.repository.UserRepository;
 import de.ait_tr.gxx_shop.security.dto.LoginRequestDTO;
 import de.ait_tr.gxx_shop.security.dto.TokenResponseDto;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -45,6 +43,8 @@ class ProductControllerTest {
     private static final String AUTH_RESOURCE_NAME = "/auth";
     private static final String PRODUCTS_RESOURCE_NAME = "/products";
     private static final String LOGIN_ENDPOINT = "/login";
+    private static final String AUTH_HEADER_NAME = "Authorization";
+
 
 
     @LocalServerPort
@@ -56,12 +56,17 @@ class ProductControllerTest {
     @Autowired
     private RoleRepository roleRepository;
 
+    @Autowired
+    private ProductRepository productRepository;
+
     private TestRestTemplate template;
     private HttpHeaders headers;
     private ProductDto testProduct;
 
     private String adminAccessToken;
     private String userAccessToken;
+    private static Long testProductId;
+
 
 
     @Autowired
@@ -183,5 +188,115 @@ class ProductControllerTest {
         // Проверка ответа: отсутствие тела
         assertFalse(response.hasBody(), "Response has unexpected body");
     }
+
+    // --------------------------- Homework
+
+    @Test
+    public void negativeSavingProductWithUserAuthorization() {
+
+        String url = URL_PREFIX + port + PRODUCTS_RESOURCE_NAME;
+        headers.put(AUTH_HEADER_NAME, List.of(userAccessToken));
+        HttpEntity<ProductDto> request = new HttpEntity<>(testProduct, headers);
+
+        ResponseEntity<ProductDto> response = template
+                .exchange(
+                        url,
+                        HttpMethod.POST,
+                        request,
+                        ProductDto.class);
+
+        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode(), "Response has unexpected status");
+    }
+
+    @Test
+    @Order(1)
+    public void positiveSavingProductWithAdminAuthorization() {
+
+        String url = URL_PREFIX + port + PRODUCTS_RESOURCE_NAME;
+        headers.put(AUTH_HEADER_NAME, List.of(adminAccessToken));
+        HttpEntity<ProductDto> request = new HttpEntity<>(testProduct, headers);
+
+        ResponseEntity<ProductDto> response = template
+                .exchange(url, HttpMethod.POST, request, ProductDto.class);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode(), "Response has unexpected status");
+
+        ProductDto savedProduct = response.getBody();
+        assertNotNull(savedProduct, "Response body doesn't have a saved product");
+        assertEquals(testProduct.getTitle(), savedProduct.getTitle(), "Saved product has unexpected title");
+
+        testProductId = savedProduct.getId();
+    }
+
+
+
+    @Test
+    @Order(2)
+    public void negativeGettingProductByIdWithoutAuthorization() {
+
+        String url = URL_PREFIX + port + PRODUCTS_RESOURCE_NAME + "/" + testProductId;
+        HttpEntity<Void> request = new HttpEntity<>(headers);
+
+        ResponseEntity<ProductDto> response = template
+                .exchange(url, HttpMethod.GET, request, ProductDto.class);
+
+        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode(), "Response has unexpected status");
+        assertFalse(response.hasBody(), "Response has unexpected body");
+    }
+
+
+    @Test
+    @Order(3)
+    public void negativeGettingProductByIdWithBasicAuthorization() {
+
+        String url = URL_PREFIX + port + PRODUCTS_RESOURCE_NAME + "/" + testProductId;
+        HttpEntity<Void> request = new HttpEntity<>(headers);
+
+        ResponseEntity<ProductDto> response = template
+                .withBasicAuth(TEST_USER_NAME, TEST_PASSWORD)
+                .exchange(url, HttpMethod.GET, request, ProductDto.class);
+
+        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode(), "Response has unexpected status");
+        assertFalse(response.hasBody(), "Response has unexpected body");
+    }
+
+
+    @Test
+    @Order(4)
+    public void negativeGettingProductByIdWithIncorrectToken() {
+
+        String url = URL_PREFIX + port + PRODUCTS_RESOURCE_NAME + "/" + 1;
+        headers.put(AUTH_HEADER_NAME, List.of(userAccessToken + "a"));
+        HttpEntity<Void> request = new HttpEntity<>(headers);
+
+        ResponseEntity<ProductDto> response = template
+                .exchange(url, HttpMethod.GET, request, ProductDto.class);
+
+        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode(), "Response has unexpected status");
+        assertFalse(response.hasBody(), "Response has unexpected body");
+    }
+
+
+
+    @Test
+    @Order(5)
+    public void positiveGettingProductByIdWithCorrectToken() {
+
+        String url = URL_PREFIX + port + PRODUCTS_RESOURCE_NAME + "/" + testProductId;
+        headers.put(AUTH_HEADER_NAME, List.of(userAccessToken));
+        HttpEntity<Void> request = new HttpEntity<>(headers);
+
+        ResponseEntity<ProductDto> response = template
+                .exchange(url, HttpMethod.GET, request, ProductDto.class);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode(), "Response has unexpected status");
+
+        ProductDto savedProduct = response.getBody();
+        assertNotNull(savedProduct, "Response body doesn't have a saved product");
+        assertEquals(testProduct.getTitle(), savedProduct.getTitle(), "Saved product has unexpected title");
+
+        productRepository.deleteById(savedProduct.getId());
+    }
+
 
 }
