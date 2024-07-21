@@ -16,18 +16,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.math.BigDecimal;
-import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -160,7 +156,32 @@ class ProductControllerTest {
                 new ParameterizedTypeReference<List<ProductDto>>() {}
         );
 
+        // Проверка статуса ответа
+        assertEquals(HttpStatus.OK, response.getStatusCode(), "Response has unexpected status");
 
+        // Проверка наличия тела
+        assertTrue(response.hasBody(), "Response doesn't have a body");
+    }
+
+    @Test
+    public void negativeSavingProductWithoutAuthorization(){
+
+        String url = URL_PREFIX + port + PRODUCTS_RESOURCE_NAME;
+
+        HttpEntity<ProductDto> request = new HttpEntity<>(testProduct, headers);
+
+        ResponseEntity<ProductDto> response = template.exchange(
+                url,
+                HttpMethod.POST,
+                request,
+                ProductDto.class
+        );
+
+        // Проверка ответа: статус Forbidden 403
+        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode(), "Response has unexpected status");
+
+        // Проверка ответа: отсутствие тела
+        assertFalse(response.hasBody(), "Response has unexpected body");
     }
 
 }
