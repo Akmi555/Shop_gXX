@@ -36,12 +36,14 @@ public class SecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.GET, "/products").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/login", "auth/refresh").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/products/{id}").authenticated()
-                        .requestMatchers(HttpMethod.POST, "/products").hasRole("ADMIN")
-//                        .requestMatchers(HttpMethod.GET, "/products/{id}").hasAnyRole("ADMIN", "USER")
-                        .anyRequest().authenticated()
+                        // Todo Строка для ТЕСТИРОВАНИЯ обработки ошибок. УДАЛИТЬ потом, чтобы включить Security
+                                .anyRequest().permitAll()
+//                        .requestMatchers(HttpMethod.GET, "/products").permitAll()
+//                        .requestMatchers(HttpMethod.POST, "/auth/login", "auth/refresh").permitAll()
+//                        .requestMatchers(HttpMethod.GET, "/products/{id}").authenticated()
+//                        .requestMatchers(HttpMethod.POST, "/products").hasRole("ADMIN")
+////                        .requestMatchers(HttpMethod.GET, "/products/{id}").hasAnyRole("ADMIN", "USER")
+//                        .anyRequest().authenticated()
 
                 );
 

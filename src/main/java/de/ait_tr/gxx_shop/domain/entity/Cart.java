@@ -5,10 +5,10 @@ package de.ait_tr.gxx_shop.domain.entity;
 */
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -33,6 +33,10 @@ public class Cart {
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
     List<Product> products;
+
+    @NotNull
+    private String name;
+
 
     @Override
     public String toString() {

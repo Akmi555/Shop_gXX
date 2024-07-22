@@ -6,6 +6,9 @@ package de.ait_tr.gxx_shop.service;
 
 import de.ait_tr.gxx_shop.domain.dto.ProductDto;
 import de.ait_tr.gxx_shop.domain.entity.Product;
+import de.ait_tr.gxx_shop.exception_handling.exceptions.FirstTestException;
+import de.ait_tr.gxx_shop.exception_handling.exceptions.SecondTestException;
+import de.ait_tr.gxx_shop.exception_handling.exceptions.ThirdTestException;
 import de.ait_tr.gxx_shop.repository.ProductRepository;
 import de.ait_tr.gxx_shop.service.interfacse.ProductService;
 import de.ait_tr.gxx_shop.service.mapping.ProductMappingService;
@@ -45,7 +48,8 @@ public class ProductServiceImpl implements ProductService {
     public ProductDto getById(Long id) {
         Product product = repository.findById(id).orElse(null);
         if (product == null || !product.isActive()) {
-            return null;
+            throw new ThirdTestException("This is Third Test Exception");
+//            return null;
         }
         return mappingService.mapEntityToDto(product);
     }

@@ -5,6 +5,8 @@ package de.ait_tr.gxx_shop.controller;
 */
 
 import de.ait_tr.gxx_shop.domain.dto.ProductDto;
+import de.ait_tr.gxx_shop.exception_handling.Response;
+import de.ait_tr.gxx_shop.exception_handling.exceptions.FirstTestException;
 import de.ait_tr.gxx_shop.service.interfacse.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -13,7 +15,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -52,9 +58,9 @@ public class ProductController {
     @Operation(summary = "Create product", description = "Add new product.", tags = { "Product" })
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ProductDto.class)), @Content(mediaType = "application/xml", schema = @Schema(implementation = ProductDto.class)) }) })
     @PostMapping
-    public ProductDto saveProduct(@Parameter(description = "Created project object") @RequestBody ProductDto productDto) {
-        // Todo
-        System.out.println("Save prod");
+    public ProductDto saveProduct(
+            @Parameter(description = "Created project object")
+            @Valid @RequestBody ProductDto productDto) {
         return productService.save(productDto);
     }
 
@@ -131,6 +137,12 @@ public class ProductController {
     @GetMapping("/average-price")
     public BigDecimal getAveragePrice() {
         return productService.getAveragePrice();
+    }
+
+    @ExceptionHandler(FirstTestException.class)
+    public ResponseEntity<Response> handleFirstException(FirstTestException e) {
+        Response response = new Response(e.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
 }

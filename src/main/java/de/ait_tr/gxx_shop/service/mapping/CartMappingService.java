@@ -8,7 +8,7 @@ import de.ait_tr.gxx_shop.domain.dto.CartDto;
 import de.ait_tr.gxx_shop.domain.entity.Cart;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring", uses = CustomerMapperService.class)
+@Mapper(componentModel = "spring")
 public interface CartMappingService {
 
     Cart mapDtoToEntity(CartDto dto);
