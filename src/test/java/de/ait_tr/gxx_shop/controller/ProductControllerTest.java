@@ -40,8 +40,8 @@ class ProductControllerTest {
 
 
     private static final String URL_PREFIX = "http://localhost:";
-    private static final String AUTH_RESOURCE_NAME = "/auth";
-    private static final String PRODUCTS_RESOURCE_NAME = "/products";
+    private static final String AUTH_RESOURCE_NAME = "/api/auth";
+    private static final String PRODUCTS_RESOURCE_NAME = "/api/products";
     private static final String LOGIN_ENDPOINT = "/login";
     private static final String AUTH_HEADER_NAME = "Authorization";
 

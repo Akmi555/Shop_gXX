@@ -1,11 +1,10 @@
-
 spring:
   application:
     name: Shop
   datasource:
-    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_DATABASE}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    url: jdbc:postgresql://localhost:5432/g_XX_shop
+    username: postgres
+    password: pos1234
     driver-class-name: org.postgresql.Driver
 
   liquibase:
@@ -25,4 +24,4 @@ key:
   refresh: ${KEY_REFRESH}
 
 messages:
-  hello: Hello form Digital Ocean!
+  hello: Hello form Local!
