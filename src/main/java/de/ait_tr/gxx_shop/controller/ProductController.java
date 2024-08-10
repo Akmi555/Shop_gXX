@@ -7,7 +7,7 @@ package de.ait_tr.gxx_shop.controller;
 import de.ait_tr.gxx_shop.domain.dto.ProductDto;
 import de.ait_tr.gxx_shop.exception_handling.Response;
 import de.ait_tr.gxx_shop.exception_handling.exceptions.FirstTestException;
-import de.ait_tr.gxx_shop.service.interfacse.ProductService;
+import de.ait_tr.gxx_shop.service.interfaces.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -18,7 +18,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

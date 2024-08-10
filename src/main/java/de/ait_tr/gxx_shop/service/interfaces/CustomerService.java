@@ -1,4 +1,4 @@
-package de.ait_tr.gxx_shop.service.interfacse;
+package de.ait_tr.gxx_shop.service.interfaces;
 
 import de.ait_tr.gxx_shop.domain.dto.CustomerDto;
 

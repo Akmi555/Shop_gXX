@@ -1,11 +1,10 @@
-package de.ait_tr.gxx_shop.service.interfacse;
+package de.ait_tr.gxx_shop.service.interfaces;
 /*
 @date 13.07.2024
 @author Sergey Bugaienko
 */
 
 import de.ait_tr.gxx_shop.domain.dto.ProductDto;
-import de.ait_tr.gxx_shop.domain.entity.Product;
 
 import java.math.BigDecimal;
 import java.util.List;

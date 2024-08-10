@@ -5,7 +5,7 @@ package de.ait_tr.gxx_shop.controller;
 */
 
 import de.ait_tr.gxx_shop.domain.dto.CustomerDto;
-import de.ait_tr.gxx_shop.service.interfacse.CustomerService;
+import de.ait_tr.gxx_shop.service.interfaces.CustomerService;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
