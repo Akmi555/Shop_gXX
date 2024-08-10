@@ -9,4 +9,5 @@ import de.ait_tr.gxx_shop.domain.entity.User;
 public interface UserService {
 
     void register(User user);
+    void update(User user);
 }

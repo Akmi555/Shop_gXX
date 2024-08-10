@@ -8,10 +8,12 @@ import de.ait_tr.gxx_shop.domain.entity.ConfirmationCode;
 import de.ait_tr.gxx_shop.domain.entity.User;
 import de.ait_tr.gxx_shop.repository.ConfirmationCodeRepository;
 import de.ait_tr.gxx_shop.service.interfaces.ConfirmationCodeService;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Service
 public class ConfirmationCodeServiceImpl implements ConfirmationCodeService {
 
     private final ConfirmationCodeRepository codeRepository;
@@ -35,5 +37,12 @@ public class ConfirmationCodeServiceImpl implements ConfirmationCodeService {
         codeRepository.save(confirmationCode); // Сохранение кода в базу данных
 
         return code; // Возвращаем сгенерированный код
+    }
+
+    @Override
+    public ConfirmationCode findByCode(String code) {
+        return codeRepository.findByCode(code).orElseThrow(
+                () -> new RuntimeException("Could not find confirmation code with code: " + code)
+        );
     }
 }
