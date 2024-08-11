@@ -41,7 +41,7 @@ public class SecurityConfig {
                                 .requestMatchers("/register").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/products").permitAll()
                         .requestMatchers(HttpMethod.GET, "/hello").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/login", "auth/refresh").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/login", "/auth/refresh").permitAll()
                         .requestMatchers(HttpMethod.GET, "/products/{id}").authenticated()
                         .requestMatchers(HttpMethod.POST, "/products").hasRole("ADMIN")
 ////                        .requestMatchers(HttpMethod.GET, "/products/{id}").hasAnyRole("ADMIN", "USER")

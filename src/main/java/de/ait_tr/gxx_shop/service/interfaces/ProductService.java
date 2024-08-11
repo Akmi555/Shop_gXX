@@ -24,4 +24,6 @@ public interface ProductService {
     long getProductCount();
     BigDecimal getTotalPrice();
     BigDecimal getAveragePrice();
+
+    void attachImage(String imageUrl, String productTitle);
 }

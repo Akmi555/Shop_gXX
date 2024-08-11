@@ -30,6 +30,8 @@ public class ProductDto {
     @DecimalMax(value = "100000.0", inclusive = false, message = "Product price should be less than 100000")
     private BigDecimal price;
 
+    @Schema(description = "Product image", example = "http://cloud.com/image12345.jpg")
+    private String image;
 
     @Override
     public boolean equals(Object o) {
@@ -37,7 +39,7 @@ public class ProductDto {
         if (o == null || getClass() != o.getClass()) return false;
 
         ProductDto that = (ProductDto) o;
-        return Objects.equals(id, that.id) && Objects.equals(title, that.title) && Objects.equals(price, that.price);
+        return Objects.equals(id, that.id) && Objects.equals(title, that.title) && Objects.equals(price, that.price) && Objects.equals(image, that.image);
     }
 
     @Override
@@ -45,7 +47,16 @@ public class ProductDto {
         int result = Objects.hashCode(id);
         result = 31 * result + Objects.hashCode(title);
         result = 31 * result + Objects.hashCode(price);
+        result = 31 * result + Objects.hashCode(image);
         return result;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public Long getId() {

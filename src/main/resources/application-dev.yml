@@ -4,7 +4,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/g_XX_shop
     username: postgres
-    password: pos1234
+    password: ${DB_PASS}
     driver-class-name: org.postgresql.Driver
 
   liquibase:
@@ -43,5 +43,4 @@ key:
 
 messages:
   hello: Hello form Local!
-
 

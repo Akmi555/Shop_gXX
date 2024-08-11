@@ -11,6 +11,7 @@ import de.ait_tr.gxx_shop.repository.ProductRepository;
 import de.ait_tr.gxx_shop.service.interfaces.ProductService;
 import de.ait_tr.gxx_shop.service.mapping.ProductMappingService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -85,5 +86,21 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public BigDecimal getAveragePrice() {
         return null;
+    }
+
+    @Override
+    @Transactional
+    public void attachImage(String imageUrl, String productTitle) {
+        Product product = repository.findByTitle(productTitle)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        // Присваиваем ссылку на изображение
+        product.setImage(imageUrl);
+
+        // Сохраняем продукт
+        repository.save(product);
+
+        // Сохранять явно ничего не нужно, так как продукт в состоянии Managed
+        // и изменения автоматически попадут в базу по завершении транзакции.
     }
 }

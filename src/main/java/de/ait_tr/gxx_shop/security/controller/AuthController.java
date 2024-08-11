@@ -30,7 +30,7 @@ public class AuthController {
         try {
             return authService.login(loginRequestDTO);
         } catch (AuthException e) {
-            throw new RuntimeException();
+            throw new RuntimeException("Login failed" +  e.getMessage());
         }
     }
 
