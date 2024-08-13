@@ -51,6 +51,7 @@ public class FileServiceImpl implements FileService {
             String url = client.getUrl("cohort-33-bucket", uniqueFileName).toString();
 
             //Todo привязать ссылку к продукту
+            productService.attachImage(url, productTitle);
 
             return url;
 

@@ -17,6 +17,7 @@ public interface ProductMappingService {
     @Mapping(target = "active", constant = "true")
     Product mapDtoToEntity(ProductDto dto);
 
+    @Mapping(source = "image", target = "image")
     ProductDto mapEntityToDto(Product entity);
 
 //    Ручной маппинг

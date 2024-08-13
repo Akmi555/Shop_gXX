@@ -50,6 +50,7 @@ public class ProductServiceImpl implements ProductService {
             throw new ThirdTestException("This is Third Test Exception");
 //            return null;
         }
+
         return mappingService.mapEntityToDto(product);
     }
 
@@ -97,8 +98,6 @@ public class ProductServiceImpl implements ProductService {
         // Присваиваем ссылку на изображение
         product.setImage(imageUrl);
 
-        // Сохраняем продукт
-        repository.save(product);
 
         // Сохранять явно ничего не нужно, так как продукт в состоянии Managed
         // и изменения автоматически попадут в базу по завершении транзакции.

@@ -14,7 +14,7 @@ import java.util.Objects;
 public class ProductDto {
 
     @Schema(description = "Product unique identifier", example = "777", accessMode = Schema.AccessMode.READ_ONLY)
-   private Long id;
+    private Long id;
 
     @Schema(description = "Product title", example = "Banana")
     @NotNull(message = "Product title cannot be null")
@@ -86,7 +86,7 @@ public class ProductDto {
 
     @Override
     public String toString() {
-        return String.format("Product: id - %d, title - %s, price - %s",
-                id, title, price);
+        return String.format("Product: id - %d, title - %s, price - %s, image - %s",
+                id, title, price, image);
     }
 }
