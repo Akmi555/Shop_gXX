@@ -5,10 +5,10 @@ package de.ait_tr.gxx_shop.service.mapping;
 */
 
 import de.ait_tr.gxx_shop.domain.dto.ProductDto;
+import de.ait_tr.gxx_shop.domain.dto.ProductSupplierDto;
 import de.ait_tr.gxx_shop.domain.entity.Product;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.springframework.stereotype.Service;
 
 @Mapper(componentModel = "spring")
 public interface ProductMappingService {
@@ -19,6 +19,9 @@ public interface ProductMappingService {
 
     @Mapping(source = "image", target = "image")
     ProductDto mapEntityToDto(Product entity);
+
+    // Новый метод для маппинга в ProductSupplyDTO
+    ProductSupplierDto mapEntityToSupplyDTO(Product entity);
 
 //    Ручной маппинг
 //    public Product mapDtoToEntity(ProductDto dto){

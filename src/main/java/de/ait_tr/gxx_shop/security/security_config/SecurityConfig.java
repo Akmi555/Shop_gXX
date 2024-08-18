@@ -38,13 +38,14 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // Todo Строка для ТЕСТИРОВАНИЯ обработки ошибок. УДАЛИТЬ потом, чтобы включить Security
 //                                .anyRequest().permitAll()
-                                .requestMatchers("/register").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/products").permitAll()
+                        .requestMatchers("/register").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/products").permitAll()
                         .requestMatchers(HttpMethod.GET, "/hello").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/login", "/auth/refresh").permitAll()
                         .requestMatchers(HttpMethod.GET, "/products/{id}").authenticated()
                         .requestMatchers(HttpMethod.POST, "/products").hasRole("ADMIN")
-////                        .requestMatchers(HttpMethod.GET, "/products/{id}").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers(HttpMethod.GET, "/system/products").hasRole("SUPPLIER")
+//                      .requestMatchers(HttpMethod.GET, "/products/{id}").hasAnyRole("ADMIN", "USER")
                         .anyRequest().authenticated()
 
                 );

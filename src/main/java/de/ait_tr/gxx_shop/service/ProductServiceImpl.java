@@ -5,6 +5,7 @@ package de.ait_tr.gxx_shop.service;
 */
 
 import de.ait_tr.gxx_shop.domain.dto.ProductDto;
+import de.ait_tr.gxx_shop.domain.dto.ProductSupplierDto;
 import de.ait_tr.gxx_shop.domain.entity.Product;
 import de.ait_tr.gxx_shop.exception_handling.exceptions.ThirdTestException;
 import de.ait_tr.gxx_shop.repository.ProductRepository;
@@ -101,5 +102,13 @@ public class ProductServiceImpl implements ProductService {
 
         // Сохранять явно ничего не нужно, так как продукт в состоянии Managed
         // и изменения автоматически попадут в базу по завершении транзакции.
+    }
+
+    @Override
+    public List<ProductSupplierDto> getAllActiveProductsForSupplier() {
+        return repository.findByActiveTrue()
+                .stream()
+                .map(mappingService::mapEntityToSupplyDTO)
+                .toList();
     }
 }
