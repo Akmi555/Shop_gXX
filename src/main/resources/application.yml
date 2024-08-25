@@ -43,3 +43,8 @@ key:
 messages:
   hello: Hello form Digital Ocean!
 
+logging:
+  file:
+    name: logs/log.log
+  level:
+    root: info
