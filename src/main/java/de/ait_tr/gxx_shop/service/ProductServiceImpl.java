@@ -11,6 +11,8 @@ import de.ait_tr.gxx_shop.exception_handling.exceptions.ThirdTestException;
 import de.ait_tr.gxx_shop.repository.ProductRepository;
 import de.ait_tr.gxx_shop.service.interfaces.ProductService;
 import de.ait_tr.gxx_shop.service.mapping.ProductMappingService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +22,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
+
+    private final Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
 
     private final ProductRepository repository;
     private final ProductMappingService mappingService;
@@ -31,6 +35,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDto save(ProductDto productDto) {
+        System.out.println("Method save work");
         Product product = mappingService.mapDtoToEntity(productDto);
 //        product.setActive(true); // Реализовали в mapping.
         return mappingService.mapEntityToDto(repository.save(product));
@@ -44,16 +49,40 @@ public class ProductServiceImpl implements ProductService {
                 .collect(Collectors.toList());
     }
 
+//    @Override
+//    public ProductDto getById(Long id) {
+          // Логирование на разные уровни
+//        logger.info("Method getById called with parameter: {}", id);
+//        logger.warn("Method getById called with parameter: {}", id);
+//        logger.error("Method getById called with parameter: {}", id);
+//        Product product = repository.findById(id).orElse(null);
+//        if (product == null || !product.isActive()) {
+//            throw new ThirdTestException("This is Third Test Exception");
+////            return null;
+//        }
+//
+//        return mappingService.mapEntityToDto(product);
+//    }
+
     @Override
     public ProductDto getById(Long id) {
-        Product product = repository.findById(id).orElse(null);
+        Product product = repository.findById(id).orElseThrow(()-> new ThirdTestException("Product not found"));
         if (product == null || !product.isActive()) {
-            throw new ThirdTestException("This is Third Test Exception");
-//            return null;
+            throw new ThirdTestException("Product not active");
         }
-
         return mappingService.mapEntityToDto(product);
     }
+
+//    // Aspect
+//    @Override
+//    public ProductDto getById(Long id) {
+//        Product product = repository.findById(id).orElse(null);
+//        if (product == null || !product.isActive()) {
+//            throw new RuntimeException("Product not active");
+//        }
+//        return mappingService.mapEntityToDto(product);
+//    }
+
 
     @Override
     public ProductDto update(Long id, ProductDto productDto) {

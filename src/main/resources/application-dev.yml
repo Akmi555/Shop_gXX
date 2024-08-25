@@ -44,3 +44,9 @@ key:
 messages:
   hello: Hello form Local!
 
+logging:
+  file:
+    name: logs/log.log
+  level:
+    root: info
+

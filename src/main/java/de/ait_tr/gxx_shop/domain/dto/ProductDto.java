@@ -20,7 +20,7 @@ public class ProductDto {
     @NotNull(message = "Product title cannot be null")
     @NotBlank(message = "Product title cannot be empty")
     @Pattern(
-            regexp = "^[A-Z][a-z]{2,}$",
+            regexp = "^[A-Z][a-z][a-zA-Z0-1 ]+$",
             message = "Product title should be at least 3 characters long, start with a capital letter, and contain only letters and space"
     )
     private String title;
